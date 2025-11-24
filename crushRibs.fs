@@ -115,6 +115,7 @@ export const crushRibs = defineFeature(function(context is Context, id is Id, de
         }
         
         // Apply base fillet if requested
+        // Base and tip fillets are separate to allow different radii and independent control
         if (definition.applyBaseFillet)
         {
             try silent
@@ -285,6 +286,10 @@ function createSingleRib(context is Context, id is Id, definition is map, coordS
     skSolve(sketch);
     
     // Calculate tangent direction for extrusion (perpendicular to both radial and axial)
+    // cross(normal, radialDir) creates a vector that is:
+    //   - perpendicular to the axial direction (normal)
+    //   - perpendicular to the radial direction (radialDir)
+    //   - tangent to the circle (circumferential direction)
     // This gives the rib its thickness in the circumferential direction
     // The wedge profile extends radially (sketch X) and has width axially (sketch Y)
     var tangentDir = cross(normal, radialDir);

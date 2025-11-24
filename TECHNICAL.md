@@ -172,9 +172,16 @@ The wedge profile is drawn in the XY plane and extruded along Z.
 
 In the sketch plane:
 - X = 0: Base of rib (at cylinder surface)
-- X = ribHeight: Tip of rib (extended outward)
+- X = ribHeight: Tip of rib (extended radially outward)
 - Y = 0: Center line of rib
-- Y = ±width/2: Edges of rib
+- Y = ±width/2: Edges of rib (axial direction)
+
+### Extrusion Direction
+
+The extrusion is performed in the **tangential (circumferential) direction**:
+- Perpendicular to both the radial direction and the axial direction
+- Creates the rib thickness wrapping around the cylinder
+- Calculated as: `tangentDir = cross(normal, radialDir)`
 
 ## Onshape Integration
 
