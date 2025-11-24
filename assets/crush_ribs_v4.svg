@@ -1,0 +1,56 @@
+<svg width="100%" height="100%" viewBox="0 0 216 216" xmlns="http://www.w3.org/2000/svg">
+  <title>Beautified Crush Ribs Icon - Right Shadow Dropped</title>
+
+  <defs>
+    <radialGradient id="RimGradient" cx="25%" cy="25%" r="70%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#B0B0B0"/>
+    </radialGradient>
+
+    <radialGradient id="BoreGradient" cx="50%" cy="50%" r="90%" fx="30%" fy="30%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5C5C5C"/>
+      <stop offset="100%" stop-color="#333333"/>
+    </radialGradient>
+
+    <path id="ribShape" d="
+      M -4 -40 
+      L 0 -34 
+      L 4 -40 
+      Z" />
+  </defs>
+
+  <g transform="translate(108,108) scale(1.8) translate(-60,-60)">
+    
+    <circle cx="60" cy="60" r="46"
+      fill="url(#RimGradient)" 
+      stroke="#333" 
+      stroke-width="4"/>
+
+    <circle cx="60" cy="60" r="32"
+      fill="url(#BoreGradient)" 
+      stroke="#444" 
+      stroke-width="3"/>
+
+    <path d="M 20 60 A 40 40 0 0 1 60 20"
+      fill="none" 
+      stroke="#FFFFFF" 
+      stroke-width="6" 
+      stroke-linecap="round"
+      opacity="0.8"/>
+
+    <g transform="translate(60,60)"
+      fill="#0099D8"    stroke="#005A8B"  stroke-width="1.5"
+      stroke-linejoin="miter"
+      stroke-linecap="butt">
+
+      <use href="#ribShape" transform="rotate(0)"/>
+      <use href="#ribShape" transform="rotate(120)"/>
+      <use href="#ribShape" transform="rotate(240)"/>
+
+      <use href="#ribShape" transform="rotate(60)"/>
+      <use href="#ribShape" transform="rotate(180)"/>
+      <use href="#ribShape" transform="rotate(300)"/>
+    </g>
+
+  </g>
+</svg>
