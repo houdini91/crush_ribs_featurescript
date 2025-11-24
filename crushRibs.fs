@@ -244,10 +244,13 @@ function createSingleRib(context is Context, id is Id, definition is map, coordS
     
     skSolve(sketch);
     
-    // Extrude the wedge profile in the thickness direction
+    // Calculate tangent direction for extrusion (perpendicular to radial and normal)
+    var tangentDir = cross(normal, radialDir);
+    
+    // Extrude the wedge profile in the thickness direction (tangential)
     opExtrude(context, id + "extrude", {
         "entities" : qSketchRegion(id + "sketch"),
-        "direction" : -radialDir,  // Extrude toward center or away based on orientation
+        "direction" : tangentDir,
         "endBound" : BoundingType.BLIND,
         "endDepth" : definition.ribThickness
     });
