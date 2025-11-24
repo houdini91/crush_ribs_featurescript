@@ -2,6 +2,14 @@
 
 An Onshape FeatureScript implementing fully parametric crush-rib generation for FDM/FFF press-fit and alignment applications.
 
+## 📚 Documentation
+
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick start guide and parameter templates
+- **[EXAMPLES.md](EXAMPLES.md)** - Detailed usage examples and scenarios
+- **[TECHNICAL.md](TECHNICAL.md)** - Implementation details and algorithms
+- **[GEOMETRY.md](GEOMETRY.md)** - Visual diagrams and coordinate systems
+- **[SUMMARY.md](SUMMARY.md)** - Complete implementation summary
+
 ## Features
 
 - **Fully Parametric**: Adjustable rib count and geometry
