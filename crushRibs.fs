@@ -76,6 +76,12 @@ export const crushRibs = defineFeature(function(context is Context, id is Id, de
         definition.autoMerge is boolean;
     }
     {
+        // Validate rib count (should be caught by precondition, but double-check for safety)
+        if (definition.ribCount < 1)
+        {
+            throw regenError("Number of ribs must be at least 1");
+        }
+        
         // Get the target entity and extract center and normal
         var targetInfo = getTargetInfo(context, definition.targetEntity);
         if (targetInfo == undefined)
@@ -111,28 +117,62 @@ export const crushRibs = defineFeature(function(context is Context, id is Id, de
         // Apply base fillet if requested
         if (definition.applyBaseFillet)
         {
-            applyFillets(context, id + "baseFillet", definition.baseFilletRadius, qCreatedBy(id, EntityType.EDGE));
+            try silent
+            {
+                // Select only edges from extruded ribs (not sketch edges)
+                var ribEdges = qSubtraction(
+                    qCreatedBy(id, EntityType.EDGE),
+                    qSketchEntity(id)
+                );
+                
+                opFillet(context, id + "baseFillet", {
+                    "entities" : ribEdges,
+                    "radius" : definition.baseFilletRadius
+                });
+            }
         }
         
         // Apply tip fillet if requested
         if (definition.applyTipFillet)
         {
-            applyFillets(context, id + "tipFillet", definition.tipFilletRadius, qCreatedBy(id, EntityType.EDGE));
+            try silent
+            {
+                // Select only edges from extruded ribs (not sketch edges)
+                var ribEdges = qSubtraction(
+                    qCreatedBy(id, EntityType.EDGE),
+                    qSketchEntity(id)
+                );
+                
+                opFillet(context, id + "tipFillet", {
+                    "entities" : ribEdges,
+                    "radius" : definition.tipFilletRadius
+                });
+            }
         }
         
         // Trim to surface if requested
         if (definition.trimToSurface && definition.trimSurface != undefined)
         {
-            trimToSurface(context, id + "trim", qCreatedBy(id, EntityType.BODY), definition.trimSurface);
+            try silent
+            {
+                opSplitPart(context, id + "trim", {
+                    "targets" : qCreatedBy(id, EntityType.BODY),
+                    "tool" : definition.trimSurface,
+                    "keepType" : SplitOperationKeepType.KEEP_ALL
+                });
+            }
         }
         
         // Auto-merge if requested
         if (definition.autoMerge)
         {
-            opBoolean(context, id + "merge", {
-                "tools" : qCreatedBy(id, EntityType.BODY),
-                "operationType" : BooleanOperationType.UNION
-            });
+            try silent
+            {
+                opBoolean(context, id + "merge", {
+                    "tools" : qCreatedBy(id, EntityType.BODY),
+                    "operationType" : BooleanOperationType.UNION
+                });
+            }
         }
     });
 
@@ -244,51 +284,16 @@ function createSingleRib(context is Context, id is Id, definition is map, coordS
     
     skSolve(sketch);
     
-    // Calculate tangent direction for extrusion (perpendicular to radial and normal)
+    // Calculate tangent direction for extrusion (perpendicular to both radial and axial)
+    // This gives the rib its thickness in the circumferential direction
+    // The wedge profile extends radially (sketch X) and has width axially (sketch Y)
     var tangentDir = cross(normal, radialDir);
     
-    // Extrude the wedge profile in the thickness direction (tangential)
+    // Extrude the wedge profile to create rib thickness
     opExtrude(context, id + "extrude", {
         "entities" : qSketchRegion(id + "sketch"),
         "direction" : tangentDir,
         "endBound" : BoundingType.BLIND,
         "endDepth" : definition.ribThickness
     });
-}
-
-/**
- * Apply fillets to edges
- */
-function applyFillets(context is Context, id is Id, radius is ValueWithUnits, edges is Query)
-{
-    try
-    {
-        opFillet(context, id, {
-            "entities" : edges,
-            "radius" : radius
-        });
-    }
-    catch
-    {
-        // Fillet may fail on some edges, continue anyway
-    }
-}
-
-/**
- * Trim ribs to a surface
- */
-function trimToSurface(context is Context, id is Id, bodies is Query, surface is Query)
-{
-    try
-    {
-        opSplitPart(context, id, {
-            "targets" : bodies,
-            "tool" : surface,
-            "keepType" : SplitOperationKeepType.KEEP_ALL
-        });
-    }
-    catch
-    {
-        // Trim may fail, continue anyway
-    }
 }
