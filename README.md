@@ -6,16 +6,15 @@
 
 
 Add **crush ribs** to cylindrical holes in a single clean, parametric feature — ideal for 3D-printed **press fits**, **snap-in pegs**, and **precision friction-fit retention**.
-
-
 This FeatureScript creates **wedge-shaped ribs inside a hole**, optionally trims them to curved/angled entry surfaces, applies fillets to ease insertion, and merges everything back neatly into the parent body.
 
 
 > [On shape Feature Page](https://cad.onshape.com/documents/a56c3d3ab30e50b63edbfa0d/w/9ba07b3b785517f03a5ddc6f/e/360d7a163ea7a5db43e686ca?renderMode=0&uiState=6924b176be870b056f448862)
 
 
-<img src="assets/crush_ribs_page.png" alt="Crush ribs explaination page"> </div>
+![Demo](assets/crush_ribs.gif)
 
+<img src="assets/crush_ribs_page.png" alt="Crush ribs explaination page"> </div>
 
 ---
 
